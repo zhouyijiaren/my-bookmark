@@ -53,3 +53,12 @@ DROP COLUMN `created_at`,
 DROP COLUMN `last_click`;
 
 drop table if exists tags_bookmarks;
+
+
+DROP TABLE IF EXISTS `bookmark_tags`;
+CREATE TABLE `bookmark_tags` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `bookmark_id` int(11) NOT NULL,
+  `tag_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
