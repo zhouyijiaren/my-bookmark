@@ -41,8 +41,8 @@ exports.model = {
     encoding: 'utf8',
     host: '127.0.0.1',
     port: '3306',
-    user: 'test',
-    password: '123456',
+    user: 'root',
+    password: '946894',
     pageSize: 50,
     dateStrings: true
   }

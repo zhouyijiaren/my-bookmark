@@ -1,0 +1,36 @@
+@authorization = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InRlc3QifSwiaWF0IjoxNjIxOTMzOTM1LCJleHAiOjE2MjI1Mzg3MzV9.tM7689V4kNhgG2h0VUSS5rN3tJYcUHJ8Kwsos4Nl6cE
+###
+POST /api/bookmarkAdd HTTP/1.1
+Host: localhost:2000
+Content-Type: application/json
+authorization: {{authorization}}
+
+{
+    "tagId": 1,
+    "tagName": "zhou,xiang,i,f",
+    "title": "zhouxiang",
+    "url": "zhouxiang"
+}
+
+### 
+GET http://localhost:2000/ HTTP/1.1
+content-type: application/json
+authorization: {{authorization}}
+
+### GEt
+GET /api/bookmark?id=1
+Host: localhost:2000
+connection: keep-alive
+origin: chrome-extension://egljlaiibdecbiaekcinpimidnighcbn
+authorization: {{authorization}}
+###
+POST /api/userLogin
+Host: localhost:2000
+Content-Type: application/json
+connection: keep-alive
+origin: chrome-extension://egljlaiibdecbiaekcinpimidnighcbn
+
+{
+    "username": "test",
+    "password": "123456"
+}

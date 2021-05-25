@@ -209,26 +209,36 @@ module.exports = class extends Base {
   async bookmarkAddAction() {
     let bookmark = this.post();
     bookmark.userId = this.ctx.state.user.id;
+    console.log(bookmark.tagName)
     try {
-      // 没有分类的直接放未分类里面
-      if (!bookmark.tagId) {
-        const name = "未分类";
-        let tag = await this.model("tags").where({ name }).find();
-        if (!think.isEmpty(tag)) {
-          bookmark.tagId = tag.id;
-        } else {
+      if (!bookmark.tagName) {
+        bookmark.tagName = "未分类";
+      }
+      let tagNames = bookmark.tagName.split(",");
+      let tagIds = [];
+      for(let index in tagNames) {
+        let tagName = tagNames[index];
+        console.log(tagName)
+        let tag = await this.model("tags").where({ name: tagName}).find();
+        if (think.isEmpty(tag)) {
           let tagId = await this.model("tags").add({
             userId: this.ctx.state.user.id,
-            name
+            name: tagName
           });
-          bookmark.tagId = tagId;
+          tagIds.push(tagId);
+        } else {
+          tagIds.push(tag.id);
         }
       }
+      bookmark.tagId = tagIds.join(",");
       let data = await this.model("bookmarks").add(bookmark);
-      await this.model('tags').where({
-        userId: this.ctx.state.user.id,
-        id: bookmark.tagId
-      }).update({ lastUse: think.datetime(new Date()) });
+
+      for (var i in tagIds) {
+        await this.model('tags').where({
+          userId: this.ctx.state.user.id,
+          id: i
+        }).update({ lastUse: think.datetime(new Date()) });
+      }
       this.json({ code: 0, data, msg: `书签 ${bookmark.title} 添加成功` });
     } catch (error) {
       this.json({ code: 1, data: '', msg: error.toString() });
