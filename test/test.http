@@ -9,7 +9,7 @@ authorization: {{authorization}}
     "tagId": 1,
     "tagName": "zhou,xiang,i,f",
     "title": "zhouxiang",
-    "url": "zhouxiang"
+    "url": "zhouxiang234"
 }
 
 ### 
@@ -17,7 +17,7 @@ GET http://localhost:2000/ HTTP/1.1
 content-type: application/json
 authorization: {{authorization}}
 
-### GEt
+### GET
 GET /api/bookmark?id=1
 Host: localhost:2000
 connection: keep-alive
@@ -34,3 +34,10 @@ origin: chrome-extension://egljlaiibdecbiaekcinpimidnighcbn
     "username": "test",
     "password": "123456"
 }
+
+###
+GET /api/bookmarksByTag?tagId=1
+Host: localhost:2000
+connection: keep-alive
+origin: chrome-extension://egljlaiibdecbiaekcinpimidnighcbn
+authorization: {{authorization}}

@@ -8,6 +8,7 @@
     "autorestart": true,
     "node_args": [],
     "args": [],
+    "ignore_watch": "runtime",
     "env": {
       
     }

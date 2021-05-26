@@ -128,7 +128,7 @@ module.exports = class extends Base {
       }
     }
     */
-    let sql = "SELECT t.*, tb.bookmarkCount, tg.noteCount FROM `tags` as t LEFT OUTER JOIN ( SELECT `tagId`, COUNT(tagId) as bookmarkCount FROM bookmarks GROUP BY tagId ) tb ON t.id = tb.tagId  LEFT OUTER JOIN ( SELECT `tagId`, COUNT(tagId) as noteCount FROM notes GROUP BY tagId ) tg ON t.id = tg.tagId where t.userId = " + this.ctx.state.user.id;
+    let sql = "SELECT t.*,tb.bookmarkCount FROM`tags` AS t LEFT OUTER JOIN(SELECT`tagId`,COUNT(tagId)AS bookmarkCount FROM bookmark_tags GROUP BY tagId)tb ON t.id=tb.tagId WHERE t.userId=" + this.ctx.state.user.id;
     let tags = await this.model('tags').query(sql);
 
     this.json({ code: 0, data: tags, msg: '' });
@@ -236,13 +236,20 @@ module.exports = class extends Base {
       for (var i in tagIds) {
         await this.model('tags').where({
           userId: this.ctx.state.user.id,
-          id: i
+          id: tagIds[i]
         }).update({ lastUse: think.datetime(new Date()) });
+        
+        // add to new table
+        let bookmark_tags = {}
+        bookmark_tags.bookmarkId = data;
+        bookmark_tags.tagId = tagIds[i];
+        bookmark_tags.userId = this.ctx.state.user.id
+        await this.model("bookmark_tags").add(bookmark_tags);
       }
       this.json({ code: 0, data, msg: `书签 ${bookmark.title} 添加成功` });
     } catch (error) {
       this.json({ code: 1, data: '', msg: error.toString() });
-    }
+    } finally {}
   }
 
   // 删除书签
@@ -270,12 +277,14 @@ module.exports = class extends Base {
     if (tagId == -1) {
       condition = { userId: this.ctx.state.user.id };
     } else {
-      condition = { tagId };
+      // 必须添加个人，不然就会泄露数据
+      condition = { tagId : tagId, userId: this.ctx.state.user.id};
     }
 
     try {
       // 如果是第0页而且是个人定制的，把 最近点击 与 最近新增 的返回去。
       let data = {};
+      let data2 = {};
       if (page == 0 && tagId == -1) {
         let count = await this.model('bookmarks').where(condition).count('id');
         let totalPages = Math.ceil(count / pageSize);
@@ -312,7 +321,13 @@ module.exports = class extends Base {
           data: bookmarks
         }
       } else {
-        data = await this.model('bookmarks').where(condition).order(order).page(page, pageSize).countSelect();
+        // data = await this.model('bookmarks').where(condition).order(order).page(page, pageSize).countSelect();
+        data = await this.model('bookmark_tags').where(condition).order(order).page(page, pageSize).countSelect();
+        let ids = []
+        for (const item of data.data) {
+          ids.push(item.id)
+        }
+        data.data = await this.model('bookmarks').where({id: ['IN', ids]}).select();
       }
       this.json({ code: 0, data });
     } catch (error) {
