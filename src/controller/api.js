@@ -4,6 +4,9 @@ const fs = require('fs-extra');
 const path = require('path');
 const read = require('node-readability');
 const cheerio = require('cheerio');
+const http = require('http');
+const urlencode = require('urlencode');
+const request = require('sync-request');
 
 function md5(str) {
   return crypto.createHash('md5').update(str).digest('hex');
@@ -325,14 +328,55 @@ module.exports = class extends Base {
         data = await this.model('bookmark_tags').where(condition).order(order).page(page, pageSize).countSelect();
         let ids = []
         for (const item of data.data) {
-          ids.push(item.id)
+          ids.push(item.bookmarkId)
         }
+        console.log(ids);
         data.data = await this.model('bookmarks').where({id: ['IN', ids]}).select();
       }
       this.json({ code: 0, data });
     } catch (error) {
       this.json({ code: 1, msg: error.toString() });
     }
+  }
+
+  async getKeywordAction() {
+    let text = this.post().text;
+    let currentTime = parseInt(new Date().getTime()/1000)+ "";
+    let param = "{\"type\":\"dependent\"}";
+    let paramBase64 = Buffer.from(param).toString('base64');
+    let API_KEY = "d0389cc2f94c96e1ff2575ad4de55ee9";
+    let APPID = "663fff1f";
+    let WEBTTS_URL = "http://ltpapi.xfyun.cn/v1/ke";
+    let data = API_KEY + currentTime + paramBase64;
+    let checkSum = crypto.createHash('md5').update(data).digest("hex");
+    console.log(checkSum );
+    console.log(paramBase64 );
+    console.log(currentTime );
+    const header = {
+      "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+      "X-Param": paramBase64,
+      "X-CurTime": currentTime,
+      "X-CheckSum": checkSum,
+      "X-Appid": APPID
+    }
+    const options = {
+      hostname: 'ltpapi.xfyun.cn',
+      port: 80,
+      path: '/v1/ke',
+      method: 'POST',
+      headers: header
+    };
+    
+    let test = {};
+    let postData = "text="+ urlencode(text);
+    console.log(postData);
+    
+    var req = request('POST', 'http://ltpapi.xfyun.cn/v1/ke', {
+      headers: header,
+      body: postData
+    });
+    
+    this.json(req.getBody('utf8'));
   }
 
   async bookmarksSearchAction() {
