@@ -30,8 +30,7 @@
 - [x] 在热门标签里面，有在网上找的热门书签。
 - [x] 新增备忘录功能，有时候随手要做点纪录，就方便了。任意界面按快捷键A增加备忘录。双击备忘录可查看详情！亦可分享备忘。
 - [x] 在设置的全局链接，可设置快捷键，用来在任何页面，快速打开设置的链接。
-- [x] 增加[Chrome插件](https://chrome.google.com/webstore/detail/%E4%B9%A6%E7%AD%BE%E5%BF%AB%E9%80%9F%E6%B7%BB%E5%8A%A0/lmmobgephofdffmaednjooplcpbgbjle)，可在任意界面快速添加书签至系统。如果你无法访问该插件，可以按照[Chrome如何安装插件（开发版本/自制）](https://jingyan.baidu.com/article/f3ad7d0f58d6b609c3345b80.html)方法安装插件，插件请到[bookmark-plugin](https://github.com/luchenqun/bookmark-plugin)下载。   
-- [x] 适配手机平板，手机端请访问[mb.lucq.fun](http://mb.lucq.fun/)。   
+- [x] 增加[Chrome插件](https://chrome.google.com/webstore/detail/%E4%B9%A6%E7%AD%BE%E5%BF%AB%E9%80%9F%E6%B7%BB%E5%8A%A0/lmmobgephofdffmaednjooplcpbgbjle)，可在任意界面快速添加书签至系统。如果你无法访问该插件，可以按照[Chrome如何安装插件（开发版本/自制）](https://jingyan.baidu.com/article/f3ad7d0f58d6b609c3345b80.html)方法安装插件，插件请到[bookmark-plugin](https://github.com/zhouyijiaren/bookmark-plugin)下载。   
 
 
 4 主要用到的软件与模块说明
@@ -106,7 +105,7 @@ curl -fsSL get.docker.com -o get-docker.sh
 sudo sh get-docker.sh --mirror Aliyun
 ```
 
-安装好docker环境之后，执行命令 `docker run -d -p 2000:2000 -p 3306:3306 luchenqun/mybookmark` 安装并启动应用即可。然后在浏览器输入： `http://你的IP:2000/` 即可访问书签应用。安装好的环境默认了一个账号`test`，密码为`123456`。
+安装好docker环境之后，执行命令 `docker run -d -p 2000:2000 -p 3306:3306 zhouyijiaren/mybookmark` 安装并启动应用即可。然后在浏览器输入： `http://你的IP:2000/` 即可访问书签应用。安装好的环境默认了一个账号`test`，密码为`123456`。
 
 如果MySQL需要远程访问，那么你需要进入容器之后更新 `/etc/mysql/mysql.conf.d/mysqld.cnf`，将绑定地址 `127.0.0.1` 改为 `0.0.0.0`。然后执行命令`service mysql restart`重启数据库服务。安装后的 MySQL默认有两个账户，一个是root账户，无密码。一个是在文件`/etc/mysql/debian.cnf`有个账号密码。当然这些账号都是只能在本地访问的，你需要手动创建一个可供远程访问的账号。
 
@@ -126,7 +125,7 @@ source /home/lcq/schema.sql; // 执行schema.sql文件创建数据库表格。�
 ```
 3、如果你是全新部署，你可忽略此步骤。如果之前部署过此应用，那么需要执行update.sql文件需要升级。注意：升级之前，请务必备份数据库！确认是否需要运行此升级sql文件也很简单，看一下你之前的数据库mybookmarks下面有没有`tags_bookmarks`这个数据表。如果有，那么需要执行。执行方法还是如上类似`source /home/lcq/update.sql;`。  
 4、安装Node.js。Node.js版本至少要求12.0以上。不会的话，请按照上面步骤1提供的方法自行解决。   
-5、克隆代码`git clone git@github.com:luchenqun/my-bookmark.git`，切换到项目根目录下面，执行`npm install`安装package。   
+5、克隆代码`git clone git@github.com:zhouyijiaren/my-bookmark.git`，切换到项目根目录下面，执行`npm install`安装package。   
 6、在根目录，更新`pm2.json`文件，只需要更新`cwd`项即可。该项为你项目所在的路径。更新`src/config/adapter.js`下面`exports.model`关于你的MySQL的账号密码信息。注意，该账号必须要有写数据库的权限！  
 7、如果上面的都做好了，执行命令`npm install pm2 -g`安装pm2模块。再执行命令`pm2 startOrReload pm2.json`。以后如果项目代码有升级，更新代码之后，执行此命令即可重启该应用。   
 8、在浏览器里面输入：`http://你的IP:2000/`。  

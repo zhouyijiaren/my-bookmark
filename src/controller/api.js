@@ -642,7 +642,7 @@ module.exports = class extends Base {
         <DL><p>
             <DT><H3 ADD_DATE="1622427860" LAST_MODIFIED="1622450436">JavaScript</H3>
             <DL><p>
-                <DT><A HREF="https://github.com/luchenqun/my-bookmark/issues" ADD_DATE="1622427872">Issues · luchenqun/my-bookmark</A>
+                <DT><A HREF="https://github.com/zhouyijiaren/my-bookmark/issues" ADD_DATE="1622427872">Issues · zhouyijiaren/my-bookmark</A>
                 <DT><A HREF="https://mail.google.com/mail/u/0/#inbox" ADD_DATE="1622450430">收件箱 - lcq530485521@gmail.com - Gmail</A>
             </DL><p>
         </DL><p>

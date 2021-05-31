@@ -2,7 +2,7 @@
   "name": "my-bookmark",
   "description": "a bookmark site",
   "version": "1.0.0",
-  "author": "luchenqun@qq.com",
+  "author": "956952610@qq.com",
   "scripts": {
     "start": "node development.js",
     "test": "THINK_UNIT_TEST=1 nyc ava test/ && nyc report --reporter=html",
@@ -45,7 +45,7 @@
     "metadata": {
       "name": "my-bookmark",
       "description": "a bookmark site",
-      "author": "luchenqun@qq.com",
+      "author": "956952610@qq.com",
       "babel": false
     },
     "projectName": "my-bookmark",

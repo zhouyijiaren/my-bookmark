@@ -184,7 +184,7 @@ app.controller('menuCtr', ['$scope', '$stateParams', '$state', '$window', '$time
   }
 
   $scope.star = function () {
-    var url = "https://github.com/luchenqun/my-bookmark";
+    var url = "https://github.com/zhouyijiaren/my-bookmark";
     $window.open(url, '_blank');
   }
 
