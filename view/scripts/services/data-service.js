@@ -20,12 +20,9 @@ app.factory('dataService', [function () {
     }, {
       uiSref: 'tags',
       title: '书签'
-    }, {
-      uiSref: 'note',
-      title: '备忘'
-    }, {
-      uiSref: 'hot',
-      title: '热门'
+    // }, {关闭热门
+    //   uiSref: 'hot',
+    //   title: '热门'
     }, {
       uiSref: 'settings',
       title: '设置'
@@ -39,9 +36,6 @@ app.factory('dataService', [function () {
     }, {
       uiSref: 'login',
       title: '登录'
-    }, {
-      uiSref: 'hot',
-      title: '热门'
     }],
     animationIndex: 0,
     animation: function () {

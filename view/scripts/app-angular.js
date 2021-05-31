@@ -58,15 +58,6 @@ app.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
       templateUrl: 'views/hot.html',
       controller: 'hotCtr'
     })
-    .state('note', {
-      url: '/note',
-      templateUrl: 'views/note.html',
-      params: {
-        keyword: null,
-        key: null,
-      },
-      controller: 'noteCtr'
-    })
     .state('search', {
       url: '/search',
       templateUrl: 'views/search.html',
