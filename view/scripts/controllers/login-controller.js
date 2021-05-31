@@ -1,8 +1,10 @@
 app.controller('loginCtr', ['$scope', '$filter', '$state', '$http', '$cookieStore', '$window', 'pubSubService', 'dataService', function ($scope, $filter, $state, $http, $cookieStore, $window, pubSubService, dataService) {
   console.log("Hello loginCtr...");
   if (dataService.smallDevice()) {
-    $window.location = "http://m.mybookmark.cn/#/tags";
-    return;
+    if ($window.location.hostname.indexOf("b.lucq.fun") >= 0) {
+      $window.location = "http://mb.lucq.fun/#/tags";
+      return;
+    }
   }
   pubSubService.publish('Menus.active');
 
@@ -70,7 +72,7 @@ app.controller('loginCtr', ['$scope', '$filter', '$state', '$http', '$cookieStor
       toastr.error('账号只能是数字字母，且长度必须为3到12位', "错误");
       return;
     }
-    if (!/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test($scope.emailRegister)) {
+    if (!/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test($scope.emailRegister)) {
       toastr.error('邮箱格式输入有误', "错误");
       return;
     }
