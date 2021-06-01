@@ -62,9 +62,13 @@ app.controller('tagsCtr', ['$scope', '$filter', '$state', '$window', '$statePara
 
     let reply = await get('bookmarksByTag', params);
     let bookmarks = reply.data;
-    for (bookmark of bookmarks) {
-      let tag = $scope.tags.find(tag => tag.id == bookmark.tagId);
-      tag && (bookmark.tagName = tag.name);
+    for (bookmark of bookmarks) { //tag匹配上名字
+      let tagIds = bookmark.tagId.split(",")
+      bookmark.tagName = [];
+      for (tagId of tagIds) {
+        let tag = $scope.tags.find(tag => tag.id == tagId);
+        tag && (bookmark.tagName.push(tag.name));
+      }
     }
 
     $scope.bookmarks = bookmarks;

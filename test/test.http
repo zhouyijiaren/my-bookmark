@@ -8,14 +8,14 @@ Content-Type: application/json
 authorization: {{authorization}}
 
 {
-    "tagId": 1,
+    "tagId": "1,2,3,4",
     "tagName": "zhou,xiang,i,f",
     "title": "zhouxiang",
     "url": "zhouxiang234"
 }
 
 ### 拿到指定id的书签
-GET /api/bookmark?id=1
+GET /api/bookmark?id=42
 Host: localhost:2000
 connection: keep-alive
 origin: chrome-extension://egljlaiibdecbiaekcinpimidnighcbn

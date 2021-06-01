@@ -183,7 +183,7 @@ app.controller('editCtr', ['$scope', '$state', '$timeout', '$document', 'ngDialo
     $scope.title = (bookmark && bookmark.title) || '';
     $scope.description = (bookmark && bookmark.description) || '';
     $scope.tags = tags.map((tag) => {
-      tag.clicked = bookmark.tagId == tag.id;
+      tag.clicked = bookmark.tagId.indexOf(tag.id) != -1;
       return tag;
     });
     $scope.public = (bookmark && bookmark.id) || '1';
