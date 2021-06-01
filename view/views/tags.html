@@ -79,7 +79,7 @@
         <span id="time{{bookmark.id}}" title="{{bookmark.lastClick}}" class="need_to_be_rendered" data-timeago="{{bookmark.lastClick}}"></span>
       </td>
       <td>
-        <div class="ui label">{{ bookmark.tagName }}</div>
+        <div class="ui label">{{ bookmark.tagName.join(",") }}</div>
       </td>
       <td>
         <img class="ui mini spaced image" style="width: 16px; height: 16px; margin: 0 1px" ng-src="./images/delete.png" ng-click="delBookmark(bookmark)" title="删除书签" />
