@@ -58,10 +58,10 @@ app.controller('editCtr', ['$scope', '$state', '$timeout', '$document', 'ngDialo
     init();
   }
   $scope.ok = async function () {
-    var tagId = -1;
+    let tagId = [];
     $scope.tags.forEach((tag) => {
       if (tag.clicked) {
-        tagId = tag.id;
+        tagId.push(tag.id);
       }
     });
     // console.log('Hello ok clicked', $scope.url, $scope.title, $scope.description, $scope.public, selectedTags, $scope.tags);
@@ -72,7 +72,7 @@ app.controller('editCtr', ['$scope', '$state', '$timeout', '$document', 'ngDialo
     var params = {
       id: $scope.id,
       url: $scope.url,
-      tagId,
+      tagId: tagId.join(","),
       title: $scope.title,
       description: $scope.description,
       public: $('.ui.checkbox.js-public').checkbox('is checked') ? '1' : '0',
@@ -146,7 +146,9 @@ app.controller('editCtr', ['$scope', '$state', '$timeout', '$document', 'ngDialo
 
   $scope.clickTag = function (id, clicked) {
     $scope.tags.forEach((tag) => {
-      tag.clicked = tag.id == id
+      if (tag.id == id) {
+        tag.clicked = !tag.clicked;
+      }
     })
   }
 

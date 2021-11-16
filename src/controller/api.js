@@ -209,12 +209,26 @@ module.exports = class extends Base {
     }
   }
 
+  // 获取书签byURL
+  // @todo 如果是自己的任意获取，如果是别人的必须公开才能获取
+  async bookmarkByUrlAction() {
+    let url = this.get("url");
+    let userId = this.ctx.state.user.id;
+    try {
+      let data = await this.model('bookmarks').where({ userId,url }).find();
+      this.json({ code: 0, data });
+    } catch (error) {
+      this.json({ code: 1, msg: error.toString() });
+    }
+  }
+
   // 添加书签
   async bookmarkAddAction() {
     let bookmark = this.post();
     bookmark.userId = this.ctx.state.user.id;
     console.log(bookmark.tagName)
     try {
+      // 添加tags表
       if (!bookmark.tagName) {
         bookmark.tagName = "未分类";
       }
@@ -234,9 +248,26 @@ module.exports = class extends Base {
           tagIds.push(tag.id);
         }
       }
+      // 添加 bookmarks表。手动判断，TODO 后期改成bloom
       bookmark.tagId = tagIds.join(",");
-      let data = await this.model("bookmarks").add(bookmark);
-
+      let bookmarkFromDb = await this.model("bookmarks").where({userId: bookmark.userId, url: bookmark.url}).find();
+      let bookmarkId = ""
+      if (think.isEmpty(bookmarkFromDb)) {
+        bookmarkId = await this.model("bookmarks").add(bookmark);
+      } else {
+        bookmark.id = bookmarkFromDb.id;
+        bookmarkId = bookmarkFromDb.id;
+        await this.model('bookmarks').where({
+          userId: this.ctx.state.user.id,
+          id: bookmarkFromDb.id
+        }).update(bookmark);
+        console.log("zhouxiang==>", bookmarkId)
+      }
+      // 删除bookmark_tags 重新添加 应对增加和减少的情况
+      await this.model("bookmark_tags").where({
+        bookmarkId
+      }).delete()
+      // 组装添加 关联表（数据进行重复判断）(只能这样做，因为tag是否为新，并不能说明是否已经在这个网页上关联过)
       for (var i in tagIds) {
         await this.model('tags').where({
           userId: this.ctx.state.user.id,
@@ -245,12 +276,16 @@ module.exports = class extends Base {
         
         // add to new table
         let bookmark_tags = {}
-        bookmark_tags.bookmarkId = data;
+        bookmark_tags.bookmarkId = bookmarkId;
         bookmark_tags.tagId = tagIds[i];
         bookmark_tags.userId = this.ctx.state.user.id
-        await this.model("bookmark_tags").add(bookmark_tags);
+        try {
+          await this.model("bookmark_tags").add(bookmark_tags);
+        } catch (error ) {
+
+        } finally {}
       }
-      this.json({ code: 0, data, msg: `书签 ${bookmark.title} 添加成功` });
+      this.json({ code: 0, data: bookmarkId, msg: `书签 ${bookmark.title} 添加成功` });
     } catch (error) {
       this.json({ code: 1, data: '', msg: error.toString() });
     } finally {}
@@ -261,6 +296,9 @@ module.exports = class extends Base {
     let bookmark = this.post();
     bookmark.userId = this.ctx.state.user.id;
     try {
+      // 删掉关联列表中的数据
+      this.model("bookmark_tags").where({bookmarkId: bookmark.id}).delete()
+      // 删掉 bookmarks列表中的数据
       let data = await this.model("bookmarks").where(bookmark).delete();
       this.json({ code: 0, data, msg: `书签删除成功` });
     } catch (error) {
@@ -474,9 +512,31 @@ module.exports = class extends Base {
     }
   }
 
-  // 更新书签
+  // 更新书签。todo不支持添加新的tag
   async bookmarkUpdateAction() {
     let bookmark = this.post();
+
+    //清空bookmark_tags
+    await this.model("bookmark_tags").where({
+      userId: this.ctx.state.user.id,
+      bookmarkId: bookmark.id
+    }).delete();
+    // update the bookmark_tags 
+    let tagIds = bookmark.tagId.split(",")
+    for (var i in tagIds) {
+      await this.model('tags').where({
+        userId: this.ctx.state.user.id,
+        id: tagIds[i]
+      }).update({ lastUse: think.datetime(new Date()) });
+      
+      // add to new table
+      let bookmark_tags = {}
+      bookmark_tags.bookmarkId = bookmark.id;
+      bookmark_tags.tagId = tagIds[i];
+      bookmark_tags.userId = this.ctx.state.user.id
+      await this.model("bookmark_tags").add(bookmark_tags);
+    }
+    //更新bookmarks表
     try {
       let data = await this.model('bookmarks').where({
         userId: this.ctx.state.user.id,

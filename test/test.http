@@ -1,4 +1,4 @@
-@authorization = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InRlc3QifSwiaWF0IjoxNjIxOTMzOTM1LCJleHAiOjE2MjI1Mzg3MzV9.tM7689V4kNhgG2h0VUSS5rN3tJYcUHJ8Kwsos4Nl6cE
+@authorization = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InRlc3QifSwiaWF0IjoxNjM3MDQ1OTEzLCJleHAiOjE2Mzc2NTA3MTN9.i_Cd0PGTHAjstWxsyaJXNecCODZBV4e7eT7lSHjAKo0
 
 
 ### 添加一个书签
@@ -9,9 +9,9 @@ authorization: {{authorization}}
 
 {
     "tagId": "1,2,3,4",
-    "tagName": "zhou,xiang,i,f",
+    "tagName": "zhou,xiang,i,pp",
     "title": "zhouxiang",
-    "url": "zhouxiang234"
+    "url": "test for reinsert"
 }
 
 ### 拿到指定id的书签
@@ -20,6 +20,16 @@ Host: localhost:2000
 connection: keep-alive
 origin: chrome-extension://egljlaiibdecbiaekcinpimidnighcbn
 authorization: {{authorization}}
+
+
+### 拿取指定url的书签
+GET /api/bookmarkByUrl/?url=https://debug.mxplay.com/debug/get_details/
+Host: localhost:2000
+connection: keep-alive
+origin: chrome-extension://egljlaiibdecbiaekcinpimidnighcbn
+authorization: {{authorization}}
+
+
 ###
 POST /api/userLogin
 Host: localhost:2000

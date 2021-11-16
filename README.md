@@ -32,6 +32,18 @@
 - [x] 在设置的全局链接，可设置快捷键，用来在任何页面，快速打开设置的链接。
 - [x] 增加[Chrome插件](https://chrome.google.com/webstore/detail/%E4%B9%A6%E7%AD%BE%E5%BF%AB%E9%80%9F%E6%B7%BB%E5%8A%A0/lmmobgephofdffmaednjooplcpbgbjle)，可在任意界面快速添加书签至系统。如果你无法访问该插件，可以按照[Chrome如何安装插件（开发版本/自制）](https://jingyan.baidu.com/article/f3ad7d0f58d6b609c3345b80.html)方法安装插件，插件请到[bookmark-plugin](https://github.com/zhouyijiaren/bookmark-plugin)下载。   
 
+TODO
++-
++Here is a developer road line 
++- 去掉save,改为自动识别意图（添加第一个tag以后就保存，去掉最后一个tag就删除）
++- 点击tag，今天搜索的添加。并且分割单个网页的 tag连接。让它每个都可以点击
++- 搜索页面，丰富title（后期可以添加预览图）
++--------------------------------
++- 后期开始探索，联网和数据存储格式
++- nlp服务选型
++- 先做成冷启动的推荐方案
++
+
 
 4 主要用到的软件与模块说明
 ------------------
