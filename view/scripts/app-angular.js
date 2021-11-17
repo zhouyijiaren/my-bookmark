@@ -93,6 +93,11 @@ app.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
       templateUrl: 'views/login.html',
       controller: 'loginCtr'
     })
+    .state('register', {
+      url: '/register',
+      templateUrl: 'views/register.html',
+      controller: 'loginCtr'
+    })
     .state('/', {
       url: '/',
       templateUrl: 'views/home.html',

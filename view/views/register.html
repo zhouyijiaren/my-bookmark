@@ -1,0 +1,29 @@
+<div class="ui  segment js-register" >
+  <div class="header">
+    账号注册
+  </div>
+  <div class="content">
+    <div class="ui form">
+      <div class="required field">
+        <label>邮箱</label>
+        <input type="text" placeholder="" ng-model="emailRegister">
+      </div>
+      <div class="required field">
+        <label>用户名</label>
+        <input type="text" placeholder="只允许大小写字母数字，至少3位" ng-model="usernameRegister">
+      </div>
+      <div class="required field">
+        <label>密码</label>
+        <input type="password" placeholder="" ng-model="passwordRegister1">
+      </div>
+      <div class="required field">
+        <label>确认密码</label>
+        <input type="password" placeholder="" ng-model="passwordRegister2">
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">取消</div>
+    <div class="ui green button" ng-click="register()">注册</div>
+  </div>
+</div>
