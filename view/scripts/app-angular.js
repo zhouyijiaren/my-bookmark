@@ -33,7 +33,7 @@ axios.interceptors.response.use(function (response) {
     if (reply.code == 401) {
       let hash = document.location.hash;
       let origin = document.location.origin;
-      if (!(hash == "#/login" || hash == "#/")) {
+      if (!(hash == "#/login" || hash == "#/" || hash == "#/register")) {
         window.location.href = `${origin}/#/login`;
       }
     }
