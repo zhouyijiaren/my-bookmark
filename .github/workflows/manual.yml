@@ -35,10 +35,10 @@ jobs:
       uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
         # username
-        username: ${{username}}
+        username: ${{SECRETS.USERNAME}}
         # your sftp server
-        server: ${{servername}}
+        server: ${{SECRETS.SERVERNAME}}
         # you can copy private_key from your *.pem file, keep format
-        ssh_private_key: ${{ssh_key}}
+        ssh_private_key: ${{SECRETS.SSH_KEY}}
         # files will copy to under remote_path
         remote_path: ~/
