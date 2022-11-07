@@ -1,4 +1,4 @@
-@authorization = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InRlc3QifSwiaWF0IjoxNjM3MDQ1OTEzLCJleHAiOjE2Mzc2NTA3MTN9.i_Cd0PGTHAjstWxsyaJXNecCODZBV4e7eT7lSHjAKo0
+@authorization = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InRlc3QifSwiaWF0IjoxNjUyNjk1NjExLCJleHAiOjE2NTMzMDA0MTF9.TRuNd3RPfUNRz_6CKAExtw_Nn9icipF8UVCaYQBjs5M
 
 
 ### 添加一个书签
@@ -21,6 +21,12 @@ connection: keep-alive
 origin: chrome-extension://egljlaiibdecbiaekcinpimidnighcbn
 authorization: {{authorization}}
 
+###
+GET /api/bookmarksByTag?tagId=12&page=1&pageSize=20&showType=createdAt
+Host: localhost:2000
+connection: keep-alive
+origin: chrome-extension://egljlaiibdecbiaekcinpimidnighcbn
+authorization: {{authorization}}
 
 ### 拿取指定url的书签
 GET /api/bookmarkByUrl/?url=https://debug.mxplay.com/debug/get_details/

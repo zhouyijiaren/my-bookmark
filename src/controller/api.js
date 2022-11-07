@@ -312,71 +312,67 @@ module.exports = class extends Base {
     let showType = this.get("showType") || "createdAt";
     // tagId = -1 个人定制 从自己里面取
     let condition = {};
-    let order = showType + ' DESC';
+    // 为了加上定制名字，防止排序字段歧义
+    let order = 'bookmarks.'+ showType + ' DESC';
     let page = this.get('page');
     let pageSize = parseInt(this.get('pageSize') || 50);
 
     if (tagId == -1) {
-      condition = { userId: this.ctx.state.user.id };
+      condition = { 'bookmarks.userId': this.ctx.state.user.id };
     } else {
       // 必须添加个人，不然就会泄露数据
-      condition = { tagId : tagId, userId: this.ctx.state.user.id};
+      condition = { 'bookmark_tags.tagId' : tagId, 'bookmarks.userId': this.ctx.state.user.id};
     }
 
     try {
       // 如果是第0页而且是个人定制的，把 最近点击 与 最近新增 的返回去。
       let data = {};
-      let data2 = {};
-      if (page == 0 && tagId == -1) {
-        let count = await this.model('bookmarks').where(condition).count('id');
-        let totalPages = Math.ceil(count / pageSize);
-        // 按照 2:2:1取数据
-        let length = Math.ceil(pageSize * 2 / 5);
-        let bookmarks = await this.model('bookmarks').where(condition).order('createdAt DESC').limit(0, length).select(); // 这个取一半
-
-        // 取最近点击部分数据
-        let cnt = 0;
-        let bookmarks2 = await this.model('bookmarks').where(condition).order('lastClick DESC').limit(0, pageSize * 2).select(); // 这个多取一点，有可能跟上面的重复了
-        for (const bookmark of bookmarks2) {
-          let find = bookmarks.find(item => item.id == bookmark.id);
-          if (!find) {
-            bookmarks.push(bookmark);
-            cnt++;
-            if (cnt >= length) break;
-          }
-        }
-
-        // 取点击次数最多部分
-        let bookmarks3 = await this.model('bookmarks').where(condition).order('clickCount DESC').limit(0, pageSize * 2).select(); // 这个多取一点，有可能跟上面的重复了
-        for (const bookmark of bookmarks3) {
-          let find = bookmarks.find(item => item.id == bookmark.id);
-          if (!find) {
-            bookmarks.push(bookmark);
-            if (bookmarks.length >= pageSize) break;
-          }
-        }
-
-        data = {
-          count,
-          totalPages,
-          pageSize,
-          data: bookmarks
-        }
+      if (tagId == -1) {
+        data = await this.model('bookmarks').where(condition).order(order).page(page, pageSize).countSelect();
       } else {
-        // data = await this.model('bookmarks').where(condition).order(order).page(page, pageSize).countSelect();
-        data = await this.model('bookmark_tags').where(condition).order(order).page(page, pageSize).countSelect();
-        let ids = []
-        for (const item of data.data) {
-          ids.push(item.bookmarkId)
-        }
-        console.log(ids);
-        data.data = await this.model('bookmarks').where({id: ['IN', ids]}).select();
+        data = await this.model('bookmark_tags').join(
+          {
+            table: 'bookmarks', 
+            join:'left',
+            on: ['bookmark_tags.bookmarkId',' bookmarks.id']}).where(condition).distinct('bookmarkId, bookmarks.*').order(order).page(page, pageSize).countSelect();
+       
       }
       this.json({ code: 0, data });
     } catch (error) {
       this.json({ code: 1, msg: error.toString() });
     }
   }
+
+// get the z-tag text classification result fr hug
+
+// function query(data) {
+// 	const response = await fetch(
+// 		"https://api-inference.huggingface.co/models/facebook/bart-large-mnli",
+// 		{
+// 			headers: { Authorization: "Bearer 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" },
+// 			method: "POST",
+// 			body: JSON.stringify(data),
+// 		}
+// 	);
+// 	const result = await response.json();
+// 	return result;
+
+//  async getZTagAction() {
+//   let text = this.post().text;
+
+//   data = {
+//     "inputs": text, 
+//     "parameters": {
+//       "candidate_labels": [
+//         "refund", 
+//         "legal", 
+//         "faq"]}}
+
+//   query(data).then((response) => {
+//     console.log(JSON.stringify(response));
+//   });
+
+//  }
 
   async getKeywordAction() {
     let text = this.post().text;
