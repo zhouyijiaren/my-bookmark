@@ -246,3 +246,7 @@ app.filter('characters', function () {
       return input;
     };
   });
+  // TODO: FIXME temp force login check
+  if(!$scope.login) {
+    $state.go('login', {});
+  }

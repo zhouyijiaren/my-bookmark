@@ -1,0 +1,44 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#a804dc",
+        "activityBar.background": "#a804dc",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#3f3001",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#a804dc",
+        "statusBar.background": "#8203aa",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#a804dc",
+        "statusBarItem.remoteBackground": "#8203aa",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#8203aa",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#8203aa99",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#8203aa",
+    "sqltools.connections": [
+        {
+            "database": "/Users/Shared/home/Downloads/RBAC-master/db.sqlite3",
+            "dialect": "SQLite",
+            "name": "rbac",
+            "driver": "SQLite"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "49.232.31.142",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "49.232.31.142",
+            "username": "root",
+            "database": "mybookmarks",
+            "askForPassword": true
+        }
+    ]
+}

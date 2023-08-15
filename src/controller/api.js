@@ -19,7 +19,7 @@ module.exports = class extends Base {
     }
     try {
       let user = await this.session('user');
-      if (think.isEmpty(user.id)) {
+      if (think.isEmpty(user) || think.isEmpty(user.id)) {
         return this.fail(401, '请先登录');
       }
       this.ctx.state.user = user;
